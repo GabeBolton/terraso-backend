@@ -1194,8 +1194,8 @@ six==1.17.0 \
     # via
     #   promise
     #   python-dateutil
-soil-id @ https://github.com/techmatters/soil-id-algorithm/archive/refs/tags/2026-06-26.1.zip \
-    --hash=sha256:e591e22b90db3e1ffa6ca855880842f77c4313d77c002beaac2ad13b48d6ac4d
+soil-id @ https://github.com/techmatters/soil-id-algorithm/archive/ff30be7d32fd73c87947f6b809c6e68ee5bcb72a.zip \
+    --hash=sha256:5f147d06e9c2cd7645b349e1f78ba0a8ace00ba937305af6cd70a3bb25b98e17
     # via -r requirements/base.in
 sqlparse==0.5.5 \
     --hash=sha256:12a08b3bf3eec877c519589833aed092e2444e68240a3577e8e26148acc7b1ba \
@@ -1221,12 +1221,10 @@ typing-extensions==4.15.0 \
     --hash=sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466 \
     --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
     # via
-    #   anyio
     #   cattrs
     #   graphene
     #   jwcrypto
     #   posthog
-    #   psycopg
 tzdata==2025.3 \
     --hash=sha256:06a47e5700f3081aab02b2e513160914ff0694bce9947d6b76ebd6bf57cfc5d1 \
     --hash=sha256:de39c2ca5dc7b0344f2eba86f49d614019d29f060fc4ebc8a417896a620b56a7
