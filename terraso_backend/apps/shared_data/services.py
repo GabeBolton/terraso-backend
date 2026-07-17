@@ -16,10 +16,11 @@
 from django.conf import settings
 from storages.backends.s3boto3 import S3Boto3Storage
 
+from apps.storage.s3 import TerrasoFileStorage
 from apps.storage.services import UploadService
 
 
-class DataEntryFileStorage(S3Boto3Storage):
+class DataEntryFileStorage(TerrasoFileStorage):
     bucket_name = settings.DATA_ENTRY_FILE_S3_BUCKET
 
 
@@ -31,7 +32,7 @@ class DataEntryUploadService(UploadService):
 data_entry_upload_service = DataEntryUploadService()
 
 
-class GeoJsonFileStorage(S3Boto3Storage):
+class GeoJsonFileStorage(TerrasoFileStorage):
     bucket_name = settings.DATA_ENTRY_FILE_S3_BUCKET
     querystring_expire = 86400  # 24-hour signed URL expiry
 
