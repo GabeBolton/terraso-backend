@@ -411,6 +411,16 @@ AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default="")
 AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="us-east-2")
 
+# Overrides the S3 client's endpoint. Unset in production, where boto3's default AWS
+# endpoint resolution is exactly right -- this exists so local/self-hosted
+# development can point the same storage code (StoryMapMediaStorage,
+# ProfileImageStorage, etc.) at an S3-compatible service such as MinIO instead of
+# real S3. Empty-string-means-unset, same pattern as AWS_S3_ADDRESSING_STYLE just
+# below: django-storages distinguishes an *absent* setting from an empty one, so
+# this must not be assigned at all rather than assigned "".
+if config("AWS_S3_ENDPOINT_URL", default="") != "":
+    AWS_S3_ENDPOINT_URL = config("AWS_S3_ENDPOINT_URL")
+
 # Set to "virtual" to force boto3 to use a consistent host for
 # both signature computation and URL generation. Without this, the endpoint
 # auto-resolution in generate_presigned_url can derive different hosts for
