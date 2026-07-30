@@ -24,7 +24,10 @@ class StoryMapMediaStorage(S3Boto3Storage):
 
 
 class StoryMapMediaUploadService(UploadService):
-    storage = StoryMapMediaStorage(custom_domain=None)
+    # STORY_MAP_MEDIA_CUSTOM_DOMAIN is unset (None) in production, so this is the
+    # same signed-URL-against-the-real-endpoint behavior as before; see that
+    # setting's own comment for why local/self-hosted deployments need it.
+    storage = StoryMapMediaStorage(custom_domain=settings.STORY_MAP_MEDIA_CUSTOM_DOMAIN)
     base_url = settings.STORY_MAP_MEDIA_BASE_URL
 
     def get_path_on_storage(self, user_id, file_name):

@@ -436,6 +436,13 @@ if config("AWS_S3_ENDPOINT_URL", default="") != "":
 if config("AWS_S3_ADDRESSING_STYLE", default="") != "":
     AWS_S3_ADDRESSING_STYLE = config("AWS_S3_ADDRESSING_STYLE")
 
+# Protocol used when building a public (custom_domain) media URL -- see
+# STORY_MAP_MEDIA_CUSTOM_DOMAIN below. django-storages defaults this to "https:",
+# which is right for a real deployment but wrong for a local MinIO instance with no
+# TLS. Same empty-string-means-unset pattern as the two settings above.
+if config("AWS_S3_URL_PROTOCOL", default="") != "":
+    AWS_S3_URL_PROTOCOL = config("AWS_S3_URL_PROTOCOL")
+
 if DEBUG:
     EMAIL_BACKEND = "naomi.mail.backends.naomi.NaomiBackend"
     EMAIL_FILE_PATH = "/app/email_preview"
@@ -457,6 +464,19 @@ STORY_MAP_MEDIA_S3_BUCKET = config("STORY_MAP_MEDIA_S3_BUCKET", default="")
 STORY_MAP_MEDIA_BASE_URL = (
     f"https://{config('STORY_MAP_MEDIA_BASE_URL', default=STORY_MAP_MEDIA_S3_BUCKET)}"
 )
+
+# Unset in production: StoryMapMediaStorage's default (apps/story_map/services.py)
+# always signs media URLs against the real S3 endpoint, which is also what the
+# browser needs to reach and so is correct there. A local/self-hosted deployment
+# behind Docker has no single hostname that's both container-reachable (for the
+# backend's own upload/exists/delete calls, via AWS_S3_ENDPOINT_URL above) and
+# browser-reachable (for the signed links it hands back) -- MinIO's compose network
+# alias isn't resolvable outside the Docker network. Setting this makes
+# StoryMapMediaStorage return plain, *unsigned* links against this host instead
+# (see storages.backends.s3.S3Storage.url's `if self.custom_domain` branch), which
+# only works because the local bucket is deliberately public-read
+# (tools/terraso-server/docker-compose.yaml's create-buckets step).
+STORY_MAP_MEDIA_CUSTOM_DOMAIN = config("STORY_MAP_MEDIA_CUSTOM_DOMAIN", default="") or None
 
 PUBLIC_BASE_PATHS = [
     "/admin/",  # Authentication handled by Django
